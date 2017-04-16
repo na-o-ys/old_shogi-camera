@@ -9,3 +9,6 @@ RUN git clone https://github.com/jayrambhia/Install-OpenCV.git && \
     ./opencv_latest.sh
 
 WORKDIR /app
+
+RUN apt-get install -y python-pip python3-pip
+RUN pip3 install scipy scikit-learn pandas matplotlib jupyter
