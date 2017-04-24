@@ -5,7 +5,7 @@ def dir_files(dir)
 end
 
 html = %w(<html> <body>)
-Dir.glob("./*").each do |dir|
+Dir.glob("./series/*").each do |dir|
   next unless File.directory?(dir)
   html.push("<div>")
   html.push("<h4>#{File.basename(dir)}</h4>")
