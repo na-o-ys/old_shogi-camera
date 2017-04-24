@@ -6,10 +6,10 @@ def display_cv_image(image, format='.png'):
     decoded_bytes = cv2.imencode(format, image)[1].tobytes()
     display(Image(data=decoded_bytes))
 
-# h * w のグレースケール
+# h * w grayscale
 def normalize(img, h, w):
     size = img.shape[:2]
-    f = min(h / size[0], w / size[1])
+    f = min(1.0 * h / size[0], 1.0 * w / size[1])
     resized = cv2.resize(img, (int(size[1] * f), int(size[0] * f)), interpolation=cv2.INTER_AREA)
     
     gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
@@ -23,5 +23,5 @@ labels = ['gyoku', 'ou', 'kin', 'gin', 'kei', 'kyo', 'kaku', 'hi', 'fu', 'narigi
 for label in labels:
     files = glob.glob('../images/koma/%s/*' % label)
     imgs = [cv2.imread(f) for f in files]
-    imgs = np.array([normalize(img, 32, 32) for img in imgs])
+    imgs = np.array([normalize(img, 48, 48) for img in imgs])
     np.savez_compressed('npz/%s.npz' % label, imgs)
