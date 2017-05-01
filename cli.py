@@ -38,5 +38,12 @@ def corners(img_path, out_img_path):
 def predict_cell(ctx):
     print("predict-cell")
 
+@main.command(help='Generate koma train data')
+@click.argument('img_dir', type=click.Path(exists=True))
+@click.argument('outdata_dir', type=click.Path(exists=True))
+def gen_koma_train_data(img_dir, outdata_dir):
+    shogicam.learn.gen_koma_data(img_dir, outdata_dir)
+
+
 if __name__ == '__main__':
     main()
