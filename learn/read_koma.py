@@ -20,7 +20,7 @@ labels = ['gyoku', 'ou', 'kin', 'gin', 'kei', 'kyo', 'kaku', 'hi', 'fu', 'narigi
 
 src = Path(__file__).parent / '../images/koma/series'
 dst = Path(__file__).parent
-for i, directory in enumerate(src.resolve().glob('*')):
+for i, directory in enumerate(sorted(src.resolve().glob('*'))):
     found = []
     imgs = []
     if not directory.is_dir():

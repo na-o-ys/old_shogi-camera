@@ -1,6 +1,11 @@
 From nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
 
-RUN apt-get update && apt-get install -y git wget sudo g++ 
+RUN apt-get update && \
+    apt-get install -y git wget sudo g++ python-dev python-pip python3-dev python3-pip && \
+    pip install --upgrade pip && \
+    pip install numpy && \
+    pip3 install --upgrade pip && \
+    pip3 install numpy
 
 # OpenCV
 COPY opencv/dependencies.sh opencv/dependencies.sh
@@ -12,7 +17,6 @@ RUN cd opencv && \
     rm -rf opencv
 
 RUN apt-get install -y python-pip python3-pip libhdf5-dev graphviz
-RUN pip3 install --upgrade pip
 RUN pip3 install scipy scikit-learn pandas matplotlib jupyter tensorflow-gpu Pillow h5py keras
 
 ENV LC_ALL C.UTF-8
