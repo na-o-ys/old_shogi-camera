@@ -3,19 +3,7 @@ import glob
 import numpy as np
 from pathlib import Path
 from shogicam.constant import *
-
-# h * w / gray
-def normalize(img, h, w):
-    size = img.shape[:2]
-    f = min(h / size[0], w / size[1])
-    resized = cv2.resize(img, (int(size[1] * f), int(size[0] * f)), interpolation=cv2.INTER_AREA)
-    
-    gray = cv2.cvtColor(resized, cv2.COLOR_BGR2GRAY)
-    blank = np.full((h, w), np.uint8(255), dtype=np.uint8)
-    hstart = int((h - gray.shape[0]) / 2)
-    wstart = int((w - gray.shape[1]) / 2)
-    blank[hstart:(hstart + gray.shape[0]), wstart:(wstart + gray.shape[1])] = gray
-    return blank
+import shogicam.util
 
 def gen_koma_traindata(img_dir, outdata_dir):
     saved_files = []
@@ -28,7 +16,7 @@ def gen_koma_traindata(img_dir, outdata_dir):
             path = "%s/%s.png" % (directory, label)
             if Path(path).is_file():
                 img = cv2.imread(path)
-                img = normalize(img, IMG_ROWS, IMG_COLS)
+                img = shogicam.util.normalize_img(img, IMG_ROWS, IMG_COLS)
                 imgs.append(img)
                 found.append(label)
         if not imgs:
@@ -43,7 +31,7 @@ def gen_empty_cell_traindata(img_dir, outdata_path):
     saved_files = []
     for path in sorted(glob.glob(img_dir + '/*.png')):
         img = cv2.imread(path)
-        img = normalize(img, IMG_ROWS, IMG_COLS)
+        img = shogicam.util.normalize_img(img, IMG_ROWS, IMG_COLS)
         imgs.append(img)
         saved_files.append(path)
     np.savez_compressed(outdata_path, imgs=imgs)

@@ -1,17 +1,29 @@
+import os
 import click
 import shogicam
 import shogicam.util
 import shogicam.data
 import shogicam.learn
+import shogicam.preprocess
+import shogicam.predict
 
 @click.group(help='shogi camera')
 def main():
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
     pass
 
 @main.command(help='Predict shogi board contents')
-@click.pass_context
-def predict(ctx):
-    print("predict")
+@click.argument('img_path', type=click.Path(exists=True))
+@click.option('--model', '-m', default='purple')
+@click.option('--model-path', '-m', default='models/purple.h5')
+def predict(img_path, model, model_path):
+    raw_img = shogicam.util.load_img(img_path)
+    board, score = shogicam.preprocess.trim_board(raw_img)
+    print("corner detection score: %f" % score)
+    result = shogicam.predict.predict_board(board, model_path)
+    for row in result.reshape((9, 9)):
+        row_labels = [shogicam.util.label_name(c) for c in row]
+        print(' '.join(row_labels))
 
 @main.command(help='Fit model')
 @click.option('--data-dir', '-d', type=click.Path(exists=True), default='data')
@@ -49,7 +61,7 @@ def predict_cell(ctx):
 @click.option('--out-img-path', '-o', type=click.Path(), default=None)
 def detect_corners(img_path, out_img_path):
     raw_img = shogicam.util.load_img(img_path)
-    rect, score = shogicam.corners(raw_img)
+    rect, score = shogicam.preprocess.detect_corners(raw_img)
     if out_img_path:
         drawed = shogicam.util.draw_rect(raw_img, rect)
         shogicam.util.save(drawed, out_img_path)
