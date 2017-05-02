@@ -44,12 +44,18 @@ def predict_cell(ctx):
 @click.argument('img_dir', type=click.Path(exists=True), default='images/koma')
 @click.argument('outdata_dir', type=click.Path(exists=True), default='data/koma')
 def gen_koma_traindata(img_dir, outdata_dir):
-    # TODO: space
     result = shogicam.data.gen_koma_traindata(img_dir, outdata_dir)
     print(result)
 
+@main.command(help='Generate empty cell train data')
+@click.argument('img_dir', type=click.Path(exists=True), default='images/empty_cell')
+@click.argument('outdata_path', type=click.Path(), default='data/empty_cell.npz')
+def gen_empty_cell_traindata(img_dir, outdata_path):
+    result = shogicam.data.gen_empty_cell_traindata(img_dir, outdata_path)
+    print(result)
+
 @main.command(help='Fit model')
-@click.option('--data-dir', '-d', type=click.Path(exists=True), default='data/koma')
+@click.option('--data-dir', '-d', type=click.Path(exists=True), default='data')
 @click.option('--outmodel-path', '-o', type=click.Path(), default='model.h5')
 def learn(data_dir, outmodel_path, model='purple'):
     model = shogicam.learn.purple(data_dir, verbose=True)
