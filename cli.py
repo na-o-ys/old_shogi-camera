@@ -49,8 +49,8 @@ def gen_koma_traindata(img_dir, outdata_dir):
     print(result)
 
 @main.command(help='Fit model')
-@click.argument('data_dir', type=click.Path(exists=True), default='data/koma')
-@click.argument('outmodel_path', type=click.Path(), default='model.h5')
+@click.option('--data-dir', '-d', type=click.Path(exists=True), default='data/koma')
+@click.option('--outmodel-path', '-o', type=click.Path(), default='model.h5')
 def learn(data_dir, outmodel_path, model='purple'):
     model = shogicam.learn.purple(data_dir, verbose=True)
     shogicam.learn.save_model(model, outmodel_path)
