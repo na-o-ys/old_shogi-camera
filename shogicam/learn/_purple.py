@@ -13,7 +13,7 @@ def learn(data_dir, verbose=False, test_size=0.05):
 
     datagen = ImageDataGenerator(rotation_range=15, zoom_range=0.25)
     model.fit_generator(datagen.flow(x_train, y_train, batch_size=16),
-            steps_per_epoch=x_train.shape[0], epochs=5, verbose=verbose,
+            steps_per_epoch=x_train.shape[0], epochs=80, verbose=verbose,
             validation_data=(x_test, y_test))
     return model
 
