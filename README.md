@@ -1,67 +1,47 @@
 # System Requirements
 
-## To execute on host machine
+## To execute on a native machine
 
-- Tensorflow
+- Python 3.5
 - Keras 2
+- Tensorflow 1.1.0
+- scipy, numpy, scikit-learn
+- hdf5, h5py
 
-## To execute on GPU container
+## To execute on a Docker container (without GPU)
 
-Host machine requirements.
+- Docker Engine
 
-- AWS p2 instance
-    - Ubuntu Server 16.04 LTS (HVM), SSD Volume Type
-    - Disk: 100 GB SSD
-    - GPU: NVIDIA Tesla K80
+## To execute on a GPU container
+
+Docker host requirements. (made for AWS p2 instance)
+
+- GPU (NVIDIA Tesla K80)
 - CUDA Toolkit / CUDA Driver
 - Docker Engine
 - nvidia-docker
 
-## To execute on noGPU container
-
-- Docker Engine
-
-# Run app
+# Quick Start
 
 ```
 $ python3 cli.py
 ```
 
-# Run Jupyter Notebook
-
-GPU container
+or execute on a Docker container,
 
 ```
-$ make notebook
+$ NOGPU=1 ./run
 ```
 
-noGPU container
-
-```
-$ NOGPU=1 make notebook
-```
-
-# (Optional) Build Containers
+# Build Containers
 
 ## GPU container
-
-```
-$ cd containers/gpu && docker build .
-```
-
-or
 
 ```
 $ make build
 ```
 
 ## noGPU container
-
-```
-$ cd containers/nogpu && docker build .
-```
-
-or 
 
 ```
 $ make build-nogpu
