@@ -1,6 +1,7 @@
 import click
 import shogicam
 import shogicam.util
+import shogicam.data
 
 @click.group(help='shogi camera')
 @click.pass_context
@@ -42,7 +43,8 @@ def predict_cell(ctx):
 @click.argument('img_dir', type=click.Path(exists=True), default='images/koma')
 @click.argument('outdata_dir', type=click.Path(exists=True), default='data/koma')
 def gen_koma_traindata(img_dir, outdata_dir):
-    shogicam.data.gen_koma_traindata(img_dir, outdata_dir)
+    result = shogicam.data.gen_koma_traindata(img_dir, outdata_dir)
+    print(result)
 
 if __name__ == '__main__':
     main()

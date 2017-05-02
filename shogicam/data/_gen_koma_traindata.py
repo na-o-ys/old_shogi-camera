@@ -18,10 +18,11 @@ def normalize(img, h, w):
 
 def gen_koma_traindata(img_dir, outdata_dir):
     labels = ['gyoku', 'ou', 'kin', 'gin', 'kei', 'kyo', 'kaku', 'hi', 'fu', 'narigin', 'narikei', 'narikyo', 'uma', 'ryu', 'to']
-    for i, directory in enumerate(sorted(glob.glob(img_dir + '/*'))):
+    saved_files = []
+    for directory in sorted(glob.glob(img_dir + '/*')):
         found = []
         imgs = []
-        if not directory.is_dir():
+        if not Path(directory).is_dir():
             continue
         for label in labels:
             path = "%s/%s.png" % (directory, label)
@@ -30,4 +31,9 @@ def gen_koma_traindata(img_dir, outdata_dir):
                 img = normalize(img, 64, 64)
                 imgs.append(img)
                 found.append(label)
-        np.savez_compressed('{0}/{1:02d}.npz'.format(outdata_dir, i), labels=found, imgs=imgs)
+        if not imgs:
+            continue
+        file_path = '{0}/{1}.npz'.format(outdata_dir, Path(directory).stem)
+        saved_files.append(file_path)
+        np.savez_compressed(file_path, labels=found, imgs=imgs)
+    return saved_files

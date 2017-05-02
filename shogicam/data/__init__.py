@@ -1,0 +1,1 @@
+from ._gen_koma_traindata import gen_koma_traindata
