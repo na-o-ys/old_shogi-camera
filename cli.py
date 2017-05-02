@@ -2,6 +2,7 @@ import click
 import shogicam
 import shogicam.util
 import shogicam.data
+import shogicam.learn
 
 @click.group(help='shogi camera')
 @click.pass_context
@@ -43,8 +44,16 @@ def predict_cell(ctx):
 @click.argument('img_dir', type=click.Path(exists=True), default='images/koma')
 @click.argument('outdata_dir', type=click.Path(exists=True), default='data/koma')
 def gen_koma_traindata(img_dir, outdata_dir):
+    # TODO: space
     result = shogicam.data.gen_koma_traindata(img_dir, outdata_dir)
     print(result)
+
+@main.command(help='Fit model')
+@click.argument('data_dir', type=click.Path(exists=True), default='data/koma')
+@click.argument('outmodel_path', type=click.Path(), default='model.h5')
+def learn(data_dir, outmodel_path, model='purple'):
+    model = shogicam.learn.purple(data_dir, verbose=True)
+    shogicam.learn.save_model(model, outmodel_path)
 
 if __name__ == '__main__':
     main()
